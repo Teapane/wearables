@@ -1,0 +1,33 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spirit Fingers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="lib/reset.css">
+  <script src="./lib/processing-1.4.1.js"></script>
+</head>
+<body>
+  <script type="text/processing" data-processing-target="canvas">
+
+
+    void setup() {
+      size(window.innerWidth,window.innerHeight);
+      background(28, 107, 160);
+      frameRate(12);
+    }
+
+    void draw() {
+      int step = 20;
+      int size = mouseX * random(0.0, 0.25);
+      int y = mouseY + random(0, 100);
+      int x = mouseX + random(0, 100);
+
+      fill(160,235,mouseX % 255);
+      ellipse(x, y, size, size);
+    }
+  </script>
+  <canvas id="canvas"></canvas>
+</body>
+</html>
+
+
