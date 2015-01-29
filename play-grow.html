@@ -4,9 +4,24 @@
   <title>Spirit Fingers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="lib/reset.css">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="./lib/processing-1.4.1.js"></script>
 </head>
 <body>
+  <script type="text/javascript">
+      function getArduinoVals(){
+
+        $.getJSON('http://localhost:8080/arduino/', function(data){
+          window.lastVal = data.val;
+        });
+
+        var t = setTimeout("getArduinoVals()",500); //second argument is the milliseconds delay
+      };
+
+      getArduinoVals();
+		</script>
+
+
   <script type="text/processing" data-processing-target="canvas">
 
     void setup() {
@@ -22,7 +37,7 @@
       stroke(0, 128, 20);
       for(int i = 0; i < 9; i++) {
         for(int j = 0; j < 1000; j += 100) {
-        fill(60, 0, mouseY % 255);
+        fill(60, 0, window.lastVal % 255);
         rect((i * 10 + mouseX % width) - j, height * i / 8, sin(mouseX) * 100 - i * 5, cos(mouseX) * 100 - i * 5);
         noFill();
         bezier(sin(mouseX) * width /2, sin(mouseX) * height / 2, width, height/sin(i), width, height*2/i, sin(frameCount) * width, sin(frameCount) * height);

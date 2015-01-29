@@ -3,12 +3,25 @@
   <meta charset="utf-8">
   <title>Spirit Fingers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" href="lib/reset.css">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="./lib/processing-1.4.1.js"></script>
 </head>
 <body>
-  <script type="text/processing" data-processing-target="canvas">
+		<script type="text/javascript">
+      function getArduinoVals(){
 
+        $.getJSON('http://localhost:8080/arduino/', function(data){
+          window.lastVal = data.val;
+        });
+
+        var t = setTimeout("getArduinoVals()",500); //second argument is the milliseconds delay
+      };
+
+      getArduinoVals();
+		</script>
+
+
+  <script type="text/processing" data-processing-target="canvas">
 
     void setup() {
       size(window.innerWidth,window.innerHeight);
@@ -22,7 +35,7 @@
       int y = mouseY + random(0, 100);
       int x = mouseX + random(0, 100);
 
-      fill(160,235,mouseX % 255);
+      fill(window.lastVal + 1 % 255,235,window.lastVal % 255);
       ellipse(x, y, size, size);
     }
   </script>

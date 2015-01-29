@@ -3,10 +3,24 @@
   <meta charset="utf-8">
   <title>Spirit Fingers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" href="lib/reset.css">
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="./lib/processing-1.4.1.js"></script>
 </head>
 <body>
+  <script type="text/javascript">
+      function getArduinoVals(){
+
+        $.getJSON('http://localhost:8080/arduino/', function(data){
+          window.lastVal = data.val;
+        });
+
+        var t = setTimeout("getArduinoVals()",500); //second argument is the milliseconds delay
+      };
+
+      getArduinoVals();
+		</script>
+
+
   <script type="text/processing" data-processing-target="canvas">
 
 float theta;
@@ -14,29 +28,24 @@ float theta;
 void setup() {
   size(window.innerWidth,window.innerHeight);
   background(0);
-  frameRate(10);
+  frameRate(60);
 }
 
 void draw() {
   stroke(255);
   // Let's pick an angle 0 to 90 degrees based on the mouse position
-  float a = (mouseX / (float) width) * 90f;
+  float a = (window.lastVal / (float) width) * 90f;
   // Convert it to radians
   theta = radians(a);
   // Start the tree from the bottom of the screen
   translate(width/2,height*2/3);
-  rotate(radians(mouseY % 360));
+  rotate(radians(window.lastVal % 360));
   // Draw a line 120 pixels
   line(0,0,0,120);
   // Move to the end of that line
   translate(0, -120);
   // Start the recursive branching!
-  branch(mouseX % 250);
-
-  if (frameCount > 80) {
-    background(0);
-    frameCount = 0;
-  }
+  branch(window.lastVal % 250);
 
 }
 
